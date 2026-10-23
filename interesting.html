@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Interesting Stuff</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Courier+Prime:wght@400;700&display=swap">
+<style>
+/* Layout: the reading-room annex of the Payne Catalog. A ruled masthead, a shelf-by-shelf diet bar, then a filed list of saved reads. */
+:root{
+  --bg:#e9edf1; --drawer:#dde3e9; --card:#fbfcfd; --ink:#1b2735; --muted:#5a6878; --rule:#b9c7d6;
+  --red:#b23a48; --blue:#2f5d8a; --line:#cfd8e2;
+  --s1:#b23a48; --s2:#2f5d8a; --s3:#7a6a2f; --s4:#3d7a6a; --s5:#6b4c8a; --s6:#a0603a; --s7:#4a5a6a;
+  --display:"Big Shoulders Display","Arial Narrow",Impact,sans-serif;
+  --body:"Newsreader",Georgia,"Times New Roman",serif;
+  --mono:"Courier Prime","Courier New",Courier,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0e141c; --drawer:#131b25; --card:#1a2430; --ink:#e6ecf2; --muted:#93a2b3; --rule:#2c3b4c;
+  --red:#e2707c; --blue:#86b2dc; --line:#2a3644;
+  --s1:#e2707c; --s2:#86b2dc; --s3:#cdb86a; --s4:#6fc2ab; --s5:#b49ad6; --s6:#e09a6c; --s7:#9fb0c1; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e141c; --drawer:#131b25; --card:#1a2430; --ink:#e6ecf2; --muted:#93a2b3; --rule:#2c3b4c;
+  --red:#e2707c; --blue:#86b2dc; --line:#2a3644;
+  --s1:#e2707c; --s2:#86b2dc; --s3:#cdb86a; --s4:#6fc2ab; --s5:#b49ad6; --s6:#e09a6c; --s7:#9fb0c1; color-scheme:dark}
+*{box-sizing:border-box}
+html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;margin:0}
+.wrap{max-width:1000px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2{font-family:var(--display);text-wrap:balance;margin:0;line-height:1;letter-spacing:.01em}
+a{color:var(--ink)}
+:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+nav{display:flex;flex-wrap:wrap;gap:18px;padding-block:18px 0;font-family:var(--mono);font-size:13px;letter-spacing:.08em;text-transform:uppercase}
+nav a{color:var(--muted);text-decoration:none;border-bottom:1px solid transparent}
+nav a:hover{color:var(--ink);border-bottom-color:var(--red)}
+nav a[aria-current="page"]{color:var(--red);border-bottom-color:var(--red)}
+header{padding-block:28px 26px;border-bottom:3px double var(--rule)}
+.eyebrow{font-family:var(--mono);font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--red)}
+header h1{font-size:clamp(52px,10vw,108px);font-weight:800;text-transform:uppercase;margin-top:10px}
+.lede{max-width:62ch;font-size:19px;color:var(--muted);margin:14px 0 0}
+section{padding-block:36px 8px}
+.sechead{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;border-bottom:1px solid var(--rule);padding-bottom:10px;margin-bottom:18px}
+.sechead h2{font-size:clamp(30px,5vw,42px);font-weight:700;text-transform:uppercase}
+.sechead p{margin:0;color:var(--muted);font-size:15px}
+.diet{display:flex;height:22px;border:1px solid var(--rule);background:var(--card);overflow:hidden}
+.diet span{display:block;height:100%}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:12px;font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+.legend i{display:inline-block;width:10px;height:10px;margin-right:6px;vertical-align:-1px}
+.tools{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;align-items:center}
+.tools button{font-family:var(--mono);font-size:13px;background:transparent;color:var(--ink);border:1px solid var(--rule);padding:7px 11px;cursor:pointer;border-radius:2px}
+.tools button[aria-pressed="true"]{background:var(--ink);color:var(--card);border-color:var(--ink)}
+.tools button:hover{border-color:var(--red)}
+.tools label{position:absolute;left:-9999px}
+#q{font-family:var(--mono);font-size:14px;padding:8px 10px;border:1px solid var(--rule);background:var(--card);color:var(--ink);flex:1 1 220px;min-width:0;border-radius:2px}
+.list{background:var(--drawer);border:1px solid var(--rule);padding:6px 14px}
+.row{display:grid;grid-template-columns:110px 1fr;gap:4px 16px;padding:12px 2px;border-bottom:1px solid var(--line);align-items:baseline}
+.row:last-child{border-bottom:0}
+.row .call{font-family:var(--mono);font-size:12.5px;font-weight:700;letter-spacing:.04em}
+.row a{font-size:18px;font-weight:500;text-decoration:none;line-height:1.35}
+.row a:hover{text-decoration:underline;text-decoration-color:var(--red)}
+.row .meta{grid-column:2;font-family:var(--mono);font-size:12px;color:var(--muted);display:flex;gap:12px;flex-wrap:wrap}
+.row .meta b{font-weight:400}
+.row > div{min-width:0;overflow-wrap:anywhere}
+.empty{padding:28px;text-align:center;color:var(--muted)}
+footer{padding-block:36px 52px;color:var(--muted);font-size:14px;border-top:3px double var(--rule);margin-top:40px}
+@media (max-width:560px){.row{grid-template-columns:1fr}.row .meta{grid-column:1}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav aria-label="Pages"><a href="./">The Catalog</a><a href="forks.html">Decision Tree</a><a href="interesting.html" aria-current="page">Interesting Stuff</a></nav>
+<header>
+  <div class="eyebrow">Reading room · Saved from Chrome, 2024 to 2026</div>
+  <h1>Interesting Stuff</h1>
+  <p class="lede">The articles, essays, talks and tools I saved to my Personal Development Reads folder, filed onto seven shelves. Logins, admin pages and course listings are left out.</p>
+</header>
+
+<section>
+  <div class="sechead"><h2>The Diet</h2><p id="dietnote"></p></div>
+  <div class="diet" id="diet" role="img" aria-label="Share of saved reads on each shelf"></div>
+  <div class="legend" id="legend"></div>
+</section>
+
+<section>
+  <div class="sechead"><h2>The Reads</h2><p>Oldest first. Each call number is the shelf, then the month it was saved.</p></div>
+  <div class="tools" id="tools">
+    <label for="q">Search reads</label>
+    <input id="q" type="search" placeholder="Search titles and sources">
+  </div>
+  <div class="list" id="list"></div>
+</section>
+
+<footer>Built from my Chrome bookmark export of 19 October 2026. Links open the original pages in a new tab.</footer>
+</div>
+<script>
+const READS=[{"c": "Taste and the Good Life", "t": "The myth of Prometheus Drawing - Walid Kammoush", "u": "https://joseartgallery.com/artwork/drawing-mythological-the-myth-of-prometheus", "h": "joseartgallery.com", "d": "2024-08"}, {"c": "Thinking and Principles", "t": "Tech Independence | Derek Sivers", "u": "https://sive.rs/ti", "h": "sive.rs", "d": "2024-12"}, {"c": "Thinking and Principles", "t": "This Is Why I Don’t Have Goals (And What To Do Instead) - RyanHoliday.net", "u": "https://ryanholiday.net/this-is-why-i-dont-have-goals-and-what-to-do-instead/?amp=1", "h": "ryanholiday.net", "d": "2025-01"}, {"c": "Career and Leadership", "t": "4 Roles", "u": "https://sites.google.com/adventures.org/leadershiptraining/tools/4-roles", "h": "sites.google.com", "d": "2025-01"}, {"c": "Thinking and Principles", "t": "The Last Decision of Daniel Kahneman, the World’s Leading Thinker on Decisions - WSJ", "u": "https://www.wsj.com/arts-culture/books/daniel-kahneman-assisted-suicide-9fb16124?mod=djem10point", "h": "wsj.com", "d": "2025-03"}, {"c": "Culture, Politics and Society", "t": "It Would be Nice to Live in a World Where College-Educated Adults Had the Ability to Think Beyond Words", "u": "https://www.robkhenderson.com/p/it-would-be-nice-to-live-in-a-world?utm_campaign=posts-open-in-app&triedRedirect=true", "h": "robkhenderson.com", "d": "2025-04"}, {"c": "Taste and the Good Life", "t": "Ten Insiders Share Their Tips for Getting Great Value on a Luxury Vacation - WSJ", "u": "https://www.wsj.com/lifestyle/travel/insider-tips-for-scoring-great-value-on-a-luxury-vacation-18f16085?mod=djem10point", "h": "wsj.com", "d": "2025-05"}, {"c": "Career and Leadership", "t": "Courses | Harvard University", "u": "https://pll.harvard.edu/catalog?topics%5B714%5D=714&price%5B1%5D=1&max_price=&start_date=&keywords=&url=", "h": "pll.harvard.edu", "d": "2025-05"}, {"c": "Career and Leadership", "t": "The Top 40 Essential Business Books to Read - HBR Store", "u": "https://store.hbr.org/top-40-business-books/?srsltid=AfmBOoqKTnSsXSHuOBdtzqD7i5RPLf-qtNmK09--3k7qlJuWLDgTijCc", "h": "store.hbr.org", "d": "2025-05"}, {"c": "Career and Leadership", "t": "6 Emotions That Make Customers Buy", "u": "https://www.inc.com/geoffrey-james/6-emotions-that-make-customers-buy.html", "h": "inc.com", "d": "2025-06"}, {"c": "Taste and the Good Life", "t": "The Ultimate Luxury in a Rolls-Royce Is a Highly Trained Human Chauffeur - Bloomberg", "u": "https://archive.ph/bqpNG", "h": "archive.ph", "d": "2025-06"}, {"c": "Taste and the Good Life", "t": "The case for cars - The Spectator World", "u": "https://archive.ph/ZtZFK", "h": "archive.ph", "d": "2025-06"}, {"c": "Culture, Politics and Society", "t": "Everything is Kayfabe - by Abhisek Basu - Bright Mirror", "u": "https://www.brightmirror.co/p/everything-is-kayfabe?utm_source=substack&utm_campaign=post_embed&utm_medium=web", "h": "brightmirror.co", "d": "2025-07"}, {"c": "Money, Markets and Economics", "t": "Ray Dalio Principles of Navigating Big Debt Crises Summary : r/Bogleheads", "u": "https://www.reddit.com/r/Bogleheads/comments/obcr4m/ray_dalio_principles_of_navigating_big_debt/", "h": "reddit.com", "d": "2025-07"}, {"c": "Money, Markets and Economics", "t": "Margaret Thatcher and the Battle of the 364 Keynesians | Cato at Liberty Blog", "u": "https://www.cato.org/blog/margaret-thatcher-battle-364-keynesians", "h": "cato.org", "d": "2025-07"}, {"c": "Money, Markets and Economics", "t": "How Will the One, Big, Beautiful Tax Bill Impact Markets? — Carson Wealth", "u": "https://www.carsonwealth.com/insights/blog/how-will-the-one-big-beautiful-tax-bill-impact-markets/", "h": "carsonwealth.com", "d": "2025-07"}, {"c": "Taste and the Good Life", "t": "Meet the Army of Staffers Who Manage the Mansions of the Ultrarich - WSJ", "u": "https://www.wsj.com/real-estate/luxury-homes/meet-the-army-of-staffers-who-manage-the-mansions-of-the-ultrarich-9a7b93b3?mod=djem10point", "h": "wsj.com", "d": "2025-07"}, {"c": "Taste and the Good Life", "t": "The Monocle Book of Gentle Living – Allthebookswelove", "u": "https://allthebookswelove.com/products/the-monocle-book-of-gentle-living?pr_prod_strat=e5_desc&pr_rec_id=08b2b868c&pr_rec_pid=9168189030693&pr_ref_pid=9168596238629&pr_seq=uniform&_gl=1*1vb9oxp*_up*MQ..*_gs*MQ..&gclid=Cj0KCQjwyvfDBhDYARIsAItzbZGR0IqrjNOvf9Sa3me2ybuVAonA886hNI-JH0iyIL-rvgYCTu0eItMaAj7-EALw_wcB&gbraid=0AAAAA9hJCnWBHkbyV4Recs_GoPQQUH_oj", "h": "allthebookswelove.com", "d": "2025-07"}, {"c": "Thinking and Principles", "t": "Five ways to make your presentation better | Seth's Blog", "u": "https://seths.blog/2018/07/generous-assertions/", "h": "seths.blog", "d": "2025-07"}, {"c": "Thinking and Principles", "t": "The top 5% | Seth's Blog", "u": "https://seths.blog/2019/01/the-top-5/", "h": "seths.blog", "d": "2025-07"}, {"c": "Writing and Craft", "t": "Ambit | CoType™ Foundry", "u": "https://cotypefoundry.com/our-fonts/ambit", "h": "cotypefoundry.com", "d": "2025-07"}, {"c": "Thinking and Principles", "t": "Everyone Can Tell if You're a Serious Person", "u": "https://mindmeandering.substack.com/p/everyone-can-tell-if-youre-a-serious?utm_source=substack&utm_medium=email", "h": "mindmeandering.substack.com", "d": "2025-10"}, {"c": "Thinking and Principles", "t": "Adventure, Courage and the Hero's Journey", "u": "https://wkeithcampbell.substack.com/p/adventure-courage-and-the-heros-journey?utm_source=substack&utm_medium=email", "h": "wkeithcampbell.substack.com", "d": "2025-11"}, {"c": "AI and Technology", "t": "From shortcuts to sabotage: natural emergent misalignment from reward hacking \\ Anthropic", "u": "https://www.anthropic.com/research/emergent-misalignment-reward-hacking?utm_source=www.theneurondaily.com&utm_medium=newsletter&utm_campaign=claude-learned-to-lie-here-s-how&_bhlid=44a41b9f1d6419eaf5a39885128772fd98dcc510", "h": "anthropic.com", "d": "2025-11"}, {"c": "AI and Technology", "t": "\"I Invented the Transformer. Now I'm Replacing It.\" - YouTube", "u": "https://www.youtube.com/watch?v=DtePicx_kFY", "h": "youtube.com", "d": "2025-11"}, {"c": "Culture, Politics and Society", "t": "Broken Windows Policing Is Still the Best Way to Fight Crime", "u": "https://www.city-journal.org/article/broken-windows-policing-crime-malcolm-gladwell?utm_source=substack&utm_medium=email", "h": "city-journal.org", "d": "2025-11"}, {"c": "Culture, Politics and Society", "t": "How 4chan became the home of the elite reader - New Statesman", "u": "https://archive.ph/udTWA", "h": "archive.ph", "d": "2025-11"}, {"c": "Culture, Politics and Society", "t": "The Origins of Wokeness", "u": "https://www.paulgraham.com/woke.html?utm_source=substack&utm_medium=email", "h": "paulgraham.com", "d": "2025-11"}, {"c": "Culture, Politics and Society", "t": "The Typical Man Disgusts the Typical Woman", "u": "https://www.betonit.ai/p/the-typical-man-disgusts-the-typical?utm_source=substack&utm_medium=email", "h": "betonit.ai", "d": "2025-11"}, {"c": "Culture, Politics and Society", "t": "Thomas Chatterton Williams on Race, Identity, and “Cancel Culture” | The New Yorker", "u": "https://www.newyorker.com/news/q-and-a/thomas-chatterton-williams-on-race-identity-and-cancel-culture?utm_source=substack&utm_medium=email", "h": "newyorker.com", "d": "2025-11"}, {"c": "Culture, Politics and Society", "t": "People’s Conference for Palestine: “Destroy the Idea of America”", "u": "https://www.city-journal.org/article/peoples-conference-for-palestine-gaza?utm_source=substack&utm_medium=email", "h": "city-journal.org", "d": "2025-11"}, {"c": "Culture, Politics and Society", "t": "How the West was wrought", "u": "https://www.razibkhan.com/p/how-the-west-was-wrought?utm_source=%2Finbox&utm_medium=reader2", "h": "razibkhan.com", "d": "2025-11"}, {"c": "Money, Markets and Economics", "t": "We remember the internet bubble. This mania looks and feels the same.", "u": "https://crazystupidtech.com/2025/11/21/boom-bubble-bust-boom-why-should-ai-be-different/?utm_source=www.theneurondaily.com&utm_medium=newsletter&utm_campaign=claude-learned-to-lie-here-s-how&_bhlid=333f5ed3a85944548b0d957608a7ebb218d6b694", "h": "crazystupidtech.com", "d": "2025-11"}, {"c": "Taste and the Good Life", "t": "31 Things to Watch, Read, Stream and Bicker About During the Holidays - WSJ", "u": "https://www.wsj.com/arts-culture/2025-year-in-pop-culture-moments-guide-tv-movies-books-2a42069e?mod=djem10point", "h": "wsj.com", "d": "2025-12"}, {"c": "Culture, Politics and Society", "t": "The Forgotten Prophet of Propaganda - by Lily", "u": "https://furniturecoins.substack.com/p/the-forgotten-prophet-of-propaganda?utm_source=substack&utm_medium=email", "h": "furniturecoins.substack.com", "d": "2025-12"}, {"c": "Culture, Politics and Society", "t": "Helen Andrews | Overcoming the Feminization of Culture | NatCon 5 - YouTube", "u": "https://m.youtube.com/watch?si=uCNdWvRxeXba2vxN&utm_source=substack&utm_medium=email&v=EWLbq7PlrIA&feature=youtu.be", "h": "youtube.com", "d": "2025-12"}, {"c": "Writing and Craft", "t": "The Revised and Expanded Script Principles of Tony Tost", "u": "https://practical.substack.com/p/the-revised-and-expanded-script-principles", "h": "practical.substack.com", "d": "2025-12"}, {"c": "Culture, Politics and Society", "t": "The New GOP: Survey Analysis of Americans Overall, Today’s Republican Coalition, and the Minorities of MAGA", "u": "https://manhattan.institute/article/the-new-gop-survey-analysis-of-americans-overall-todays-republican-coalition-and-the-minorities-of-maga", "h": "manhattan.institute", "d": "2025-12"}, {"c": "Culture, Politics and Society", "t": "Let Men Beat Each Other Up Again.", "u": "https://kryptogal.substack.com/p/let-men-beat-each-other-up-again?utm_source=substack&utm_medium=email", "h": "kryptogal.substack.com", "d": "2025-12"}, {"c": "Thinking and Principles", "t": "principles - Nabeel S. Qureshi", "u": "https://nabeelqu.co/principles", "h": "nabeelqu.co", "d": "2026-01"}, {"c": "Taste and the Good Life", "t": "The Secret to Love Is Just Kindness - The Atlantic", "u": "https://www.theatlantic.com/health/archive/2014/06/happily-ever-after/372573/", "h": "theatlantic.com", "d": "2026-01"}, {"c": "Thinking and Principles", "t": "The Technium: 101 Additional Advices", "u": "https://kk.org/thetechnium/101-additional-advices/", "h": "kk.org", "d": "2026-01"}, {"c": "Money, Markets and Economics", "t": "Wall Street groups hire traders to wade into prediction markets", "u": "https://archive.is/ohWeM", "h": "archive.is", "d": "2026-01"}, {"c": "Thinking and Principles", "t": "Notes to myself | Seth's Blog", "u": "https://seths.blog/2025/07/65-thoughts/", "h": "seths.blog", "d": "2026-02"}, {"c": "Thinking and Principles", "t": "What to Do", "u": "https://www.paulgraham.com/do.html?utm_source=substack&utm_medium=email", "h": "paulgraham.com", "d": "2026-03"}, {"c": "Culture, Politics and Society", "t": "Manhattan Institute Poll: Democratic Voters Want a More Moderate Party", "u": "https://www.city-journal.org/article/democrats-party-voters-manhattan-institute-poll?utm_source=substack&utm_medium=email", "h": "city-journal.org", "d": "2026-03"}, {"c": "Culture, Politics and Society", "t": "Being Thomas Jefferson: Wrestling With the Founder’s Contradictions", "u": "https://www.city-journal.org/article/being-thomas-jefferson-andrew-burstein?utm_source=substack&utm_medium=email", "h": "city-journal.org", "d": "2026-03"}, {"c": "Culture, Politics and Society", "t": "The Builder Class vs The Luxury Beliefs Class | Garry's List", "u": "https://garryslist.org/posts/the-builder-class-vs-the-luxury-beliefs-class?utm_source=substack&utm_medium=email", "h": "garryslist.org", "d": "2026-03"}, {"c": "Thinking and Principles", "t": "Steady Progress and Self-Reflection — Permanent Equity: Investing in Companies that Care What Happens Next", "u": "https://www.permanentequity.com/content/2025-annual-letter", "h": "permanentequity.com", "d": "2026-03"}, {"c": "Writing and Craft", "t": "A Non-Western Canon: What Would a List of Humanity’s 100 Greatest Writers Look Like? – The Scholar's Stage", "u": "https://scholars-stage.org/a-non-western-canon-what-would-a-list-of-humanitys-100-greatest-writers-look-like/", "h": "scholars-stage.org", "d": "2026-05"}, {"c": "Culture, Politics and Society", "t": "Rob Henderson on X: \"\"Venezuela and Norway, two countries that forty years ago had the same level of both national income and oil reserves. Norway now has the largest sovereign wealth fund in the world, while millions of Venezuelans are facing malnutrition and...starvation\" https://t.co/ty1scHycmQ https://t.co/om59oxVjhV\" / X", "u": "https://x.com/robkhenderson/status/2051457408384348442?s=20&utm_source=substack&utm_medium=email", "h": "x.com", "d": "2026-05"}, {"c": "Thinking and Principles", "t": "The Mundanity of Excellence (1989, by Daniel Chambliss – @visakanv's archives", "u": "https://www.visakanv.com/archives/2014/01/07/the-mundanity-of-excellence-by-daniel-chambliss/", "h": "visakanv.com", "d": "2026-05"}, {"c": "Thinking and Principles", "t": "The Ambitious Personality - by W. Keith Campbell", "u": "https://wkeithcampbell.substack.com/p/the-ambitious-personality?utm_source=substack&utm_medium=email", "h": "wkeithcampbell.substack.com", "d": "2026-05"}, {"c": "Thinking and Principles", "t": "The Book of Elon Musk: A Guide to Purpose and Success by Eric Jorgenson — The Book of Elon Musk", "u": "https://www.elonmuskbook.org/the-book-of-elon-musk-free-online-version", "h": "elonmuskbook.org", "d": "2026-05"}, {"c": "Culture, Politics and Society", "t": "The Cool Factor of the Left - by Jennifer Sey", "u": "https://jennifersey.substack.com/p/the-cool-factor-of-the-left?utm_source=substack&utm_medium=email", "h": "jennifersey.substack.com", "d": "2026-05"}, {"c": "Thinking and Principles", "t": "SotW: Be Specific — LessWrong", "u": "https://www.lesswrong.com/posts/NgtYDP3ZtLJaM248W/sotw-be-specific", "h": "lesswrong.com", "d": "2026-06"}, {"c": "Writing and Craft", "t": "Novel Writing Courses | Faber Academy | London", "u": "https://faberacademy.com/creative-writing-courses/novel-writing-courses/", "h": "faberacademy.com", "d": "2026-07"}, {"c": "Writing and Craft", "t": "Starting to Write your Novel - Curtis Brown Creative", "u": "https://www.curtisbrowncreative.co.uk/course/starting-to-write-your-novel", "h": "curtisbrowncreative.co.uk", "d": "2026-07"}, {"c": "Taste and the Good Life", "t": "Hotelist: No pay-to-play, only hotels rated by AI", "u": "https://hotelist.com/?@=42.83083,-0.33462,6.10z&chain=", "h": "hotelist.com", "d": "2026-08"}, {"c": "Career and Leadership", "t": "Every Free Tool — The Job Insiders", "u": "https://www.thejobinsiders.com/free-career-tools", "h": "thejobinsiders.com", "d": "2026-09"}, {"c": "Culture, Politics and Society", "t": "The West is bored to death - New Statesman", "u": "https://www.newstatesman.com/ideas/2025/04/the-west-is-bored-to-death", "h": "newstatesman.com", "d": "2026-09"}, {"c": "AI and Technology", "t": "1.1.1. What is EDA?", "u": "https://www.itl.nist.gov/div898/handbook/eda/section1/eda11.htm", "h": "itl.nist.gov", "d": "2026-09"}, {"c": "AI and Technology", "t": "Oh My Git!", "u": "https://ohmygit.org/", "h": "ohmygit.org", "d": "2026-10"}, {"c": "AI and Technology", "t": "awesome-generative-ai-guide/journeys/build.md at main · aishwaryanr/awesome-generative-ai-guide", "u": "https://github.com/aishwaryanr/awesome-generative-ai-guide/blob/main/journeys/build.md#build-101-foundations-to-build", "h": "github.com", "d": "2026-10"}];
+const SHELVES=[
+ ["Thinking and Principles","TP","--s1"],["Culture, Politics and Society","CS","--s2"],["Taste and the Good Life","GL","--s3"],
+ ["AI and Technology","AI","--s4"],["Money, Markets and Economics","MM","--s5"],["Writing and Craft","WC","--s6"],["Career and Leadership","CL","--s7"]
+];
+const S=Object.fromEntries(SHELVES.map(s=>[s[0],s]));
+const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
+const counts=Object.fromEntries(SHELVES.map(s=>[s[0],READS.filter(r=>r.c===s[0]).length]));
+const diet=document.getElementById('diet'),legend=document.getElementById('legend');
+SHELVES.forEach(([n,k,v])=>{const sp=document.createElement('span');sp.style.width=(counts[n]/READS.length*100)+'%';sp.style.background=`var(${v})`;sp.title=n+': '+counts[n];diet.appendChild(sp);
+  const l=document.createElement('span');l.innerHTML=`<i style="background:var(${v})"></i>${k} · ${esc(n)} · ${counts[n]}`;legend.appendChild(l)});
+document.getElementById('dietnote').textContent=READS.length+' reads saved. Culture and principles make up over half.';
+let shelf="ALL",q="";
+try{const s=localStorage.getItem('payne-shelf');if(s&&(s==="ALL"||S[s]))shelf=s}catch(e){}
+const tools=document.getElementById('tools'),qi=document.getElementById('q');
+function renderTools(){
+  tools.querySelectorAll('button').forEach(b=>b.remove());
+  [["ALL","All ("+READS.length+")"]].concat(SHELVES.map(s=>[s[0],s[1]+" · "+s[0]])).forEach(([k,label],i)=>{
+    const b=document.createElement('button');b.type='button';b.id='shelf-'+i;b.textContent=label;b.setAttribute('aria-pressed',String(shelf===k));
+    b.addEventListener('click',()=>{shelf=k;try{localStorage.setItem('payne-shelf',k)}catch(e){};renderTools();render()});
+    tools.insertBefore(b,qi.previousElementSibling)});
+}
+function render(){
+  const list=document.getElementById('list');list.innerHTML="";
+  const ql=q.trim().toLowerCase();
+  const rows=READS.filter(r=>(shelf==="ALL"||r.c===shelf)&&(!ql||(r.t+' '+r.h).toLowerCase().includes(ql)));
+  if(!rows.length){list.innerHTML='<div class="empty">No reads match. Try another shelf or search.</div>';return}
+  rows.forEach(r=>{const s=S[r.c];const d=document.createElement('div');d.className='row';
+    d.innerHTML=`<span class="call" style="color:var(${s[2]})">${s[1]} ${r.d.replace('-','.')}</span><div><a href="${esc(r.u)}" target="_blank" rel="noopener noreferrer">${esc(r.t)}</a></div><div class="meta"><b>${esc(r.h)}</b><span>${esc(r.c)}</span></div>`;
+    list.appendChild(d)});
+}
+qi.addEventListener('input',e=>{q=e.target.value;render()});
+renderTools();render();
+</script>
+</body>
+</html>

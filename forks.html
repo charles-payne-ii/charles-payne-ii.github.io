@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>My Life As A Decision Tree</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Courier+Prime:wght@400;700&display=swap">
+<style>
+/* Layout: a single trunk running down the page. Milestones sit on the trunk; forks split into the branch taken (solid) and the branch left (dashed). */
+:root{
+  --bg:#e9edf1; --drawer:#dde3e9; --card:#fbfcfd; --ink:#1b2735; --muted:#5a6878; --rule:#b9c7d6;
+  --red:#b23a48; --redsoft:rgba(178,58,72,.10); --blue:#2f5d8a; --line:#cfd8e2;
+  --display:"Big Shoulders Display","Arial Narrow",Impact,sans-serif;
+  --body:"Newsreader",Georgia,"Times New Roman",serif;
+  --mono:"Courier Prime","Courier New",Courier,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0e141c; --drawer:#131b25; --card:#1a2430; --ink:#e6ecf2; --muted:#93a2b3; --rule:#2c3b4c;
+  --red:#e2707c; --redsoft:rgba(226,112,124,.12); --blue:#86b2dc; --line:#2a3644; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e141c; --drawer:#131b25; --card:#1a2430; --ink:#e6ecf2; --muted:#93a2b3; --rule:#2c3b4c;
+  --red:#e2707c; --redsoft:rgba(226,112,124,.12); --blue:#86b2dc; --line:#2a3644; color-scheme:dark}
+*{box-sizing:border-box}
+html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;margin:0}
+.wrap{max-width:980px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1;letter-spacing:.01em}
+:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+nav{display:flex;flex-wrap:wrap;gap:18px;padding-block:18px 0;font-family:var(--mono);font-size:13px;letter-spacing:.08em;text-transform:uppercase}
+nav a{color:var(--muted);text-decoration:none;border-bottom:1px solid transparent}
+nav a:hover{color:var(--ink);border-bottom-color:var(--red)}
+nav a[aria-current="page"]{color:var(--red);border-bottom-color:var(--red)}
+header{padding-block:28px 26px;border-bottom:3px double var(--rule)}
+.eyebrow{font-family:var(--mono);font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--red)}
+header h1{font-size:clamp(46px,9vw,96px);font-weight:800;text-transform:uppercase;margin-top:10px}
+.lede{max-width:62ch;font-size:19px;color:var(--muted);margin:14px 0 0}
+.key{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:18px;font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+.key span{display:inline-flex;align-items:center;gap:8px}
+.key i{display:inline-block;width:26px;height:0;border-top:2px solid var(--red)}
+.key i.left{border-top:2px dashed var(--muted)}
+.key i.dot{width:10px;height:10px;border:2px solid var(--ink);border-radius:50%;background:var(--card)}
+section{padding-block:40px 8px}
+.sechead{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;border-bottom:1px solid var(--rule);padding-bottom:10px;margin-bottom:22px}
+.sechead h2{font-size:clamp(30px,5vw,44px);font-weight:700;text-transform:uppercase}
+.sechead p{margin:0;color:var(--muted);font-size:15px;max-width:52ch}
+
+/* tree */
+.tree{position:relative;padding-left:64px}
+.tree::before{content:"";position:absolute;left:22px;top:6px;bottom:6px;width:3px;background:var(--ink);opacity:.85}
+.node{position:relative;margin-bottom:22px}
+.node::before{content:"";position:absolute;left:-49px;top:8px;width:12px;height:12px;border:2px solid var(--ink);border-radius:50%;background:var(--card)}
+.node.fork::before{width:16px;height:16px;left:-51px;top:6px;border-radius:2px;transform:rotate(45deg);background:var(--red);border-color:var(--red)}
+.node.now::before{background:var(--ink)}
+.when{font-family:var(--mono);font-size:12.5px;letter-spacing:.06em;color:var(--red);font-weight:700;text-transform:uppercase}
+.node h3{font-size:clamp(24px,3.6vw,32px);font-weight:700;text-transform:uppercase;margin-top:4px}
+.node p{margin:6px 0 0;max-width:66ch}
+.node .place{font-family:var(--mono);font-size:12.5px;color:var(--muted);margin-top:2px}
+.split{display:grid;grid-template-columns:1.25fr 1fr;gap:12px;margin-top:12px}
+.branch{padding:12px 14px;min-width:0}
+.branch .lab{font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:4px}
+.branch b{font-family:var(--body);font-weight:500;font-size:18.5px;display:block;line-height:1.3}
+.branch p{font-size:15.5px;margin-top:6px}
+.taken{background:var(--card);border:2px solid var(--red)}
+.taken .lab{color:var(--red)}
+.left{border:2px dashed var(--rule);color:var(--muted)}
+.left .lab{color:var(--muted)}
+.left b{color:var(--muted)}
+.why{margin-top:10px;font-size:16px;padding-left:12px;border-left:2px solid var(--line);color:var(--ink)}
+.why em{font-style:italic}
+.era{margin:34px 0 18px -64px;padding-left:64px;position:relative}
+.era span{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);background:var(--bg);padding-right:10px;position:relative;z-index:1}
+.era::after{content:"";position:absolute;left:64px;right:0;top:9px;border-top:1px solid var(--rule)}
+
+footer{padding-block:36px 52px;color:var(--muted);font-size:14px;border-top:3px double var(--rule);margin-top:40px}
+@media (max-width:600px){.split{grid-template-columns:1fr}.tree{padding-left:44px}.tree::before{left:12px}.node::before{left:-38px}.node.fork::before{left:-40px}.era{margin-left:-44px;padding-left:44px}.era::after{left:44px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav aria-label="Pages"><a href="./">The Catalog</a><a href="forks.html" aria-current="page">Decision Tree</a><a href="interesting.html">Interesting Stuff</a></nav>
+<header>
+  <div class="eyebrow">Record · Growing up to October 2026</div>
+  <h1>My Life As A Decision Tree</h1>
+  <p class="lede">The forks of my adult life: what I chose, what I left on the other branch, and why.</p>
+  <div class="key"><span><i class="dot"></i>Milestone</span><span><i></i>Branch taken</span><span><i class="left"></i>Branch left</span></div>
+</header>
+
+<section>
+<div class="tree">
+
+  <div class="era"><span>Growing up</span></div>
+
+  <div class="node">
+    <div class="when">Age 0 to 17</div>
+    <h3>Growing Up</h3>
+    <div class="place">Germany · Hawaii · Tennessee</div>
+    <p>A military family: three sisters, two wonderful parents and too many dogs to count. The service of my father and grandfathers still shapes how I make decisions.</p>
+  </div>
+
+  <div class="node">
+    <div class="when">Age 17</div>
+    <h3>Summer Leadership Seminar, West Point</h3>
+    <p>My first real experience of challenging myself. It changed me, and it made the next decision easy.</p>
+  </div>
+
+  <div class="node fork">
+    <div class="when">2007 · Fork</div>
+    <h3>West Point or Clemson</h3>
+    <div class="split">
+      <div class="branch taken"><span class="lab">Taken</span><b>The United States Military Academy</b><p>I went to learn discipline, leadership, strength and resilience.</p></div>
+      <div class="branch left"><span class="lab">Left</span><b>Clemson</b><p>My backup, with in-state tuition. It would have been cool.</p></div>
+    </div>
+    <p class="why">After the seminar it was not close.</p>
+  </div>
+
+  <div class="era"><span>West Point and the Army</span></div>
+
+  <div class="node fork">
+    <div class="when">2009 · Fork</div>
+    <h3>Quit or Stay</h3>
+    <div class="split">
+      <div class="branch taken"><span class="lab">Taken</span><b>Stay, by way of the Air Force Academy exchange</b><p>I was accepted to the exchange, and completed the jump program there with a solo skydive on my first jump.</p></div>
+      <div class="branch left"><span class="lab">Left</span><b>Leave West Point</b><p>Yuk year felt like a pointless academic slog. At least Plebe year invested in me. Now no one seemed to care about my success.</p></div>
+    </div>
+    <p class="why">A conversation with my dad convinced me not to leave.</p>
+  </div>
+
+  <div class="node">
+    <div class="when">2011</div>
+    <h3>Graduates and commissions</h3>
+    <div class="place">B.S. Civil Engineering · Engineer officer · Hawaii</div>
+    <p>I chose the engineers and a Hawaii posting, to grow as a leader under stress.</p>
+  </div>
+
+  <div class="node fork">
+    <div class="when">2012 · Fork</div>
+    <h3>Horizontal Engineering or the Sappers</h3>
+    <div class="split">
+      <div class="branch taken"><span class="lab">Taken</span><b>34th Sapper Company, 65th Engineer Battalion</b><p>A combat engineer company preparing to deploy.</p></div>
+      <div class="branch left"><span class="lab">Left</span><b>Stay with Horizontal Engineering in the 561st</b></div>
+    </div>
+    <p class="why">I wanted to become a combat leader.</p>
+  </div>
+
+  <div class="node">
+    <div class="when">Deployment</div>
+    <h3>Afghanistan</h3>
+    <div class="place">Operation Enduring Freedom</div>
+    <p>I ran the operations centre for route-clearance patrols on a key highway, and later served as company executive officer and battalion operations officer.</p>
+  </div>
+
+  <div class="node">
+    <div class="when">2016</div>
+    <h3>Ended my service obligation</h3>
+    <p>Five years after commissioning, I left the Army.</p>
+  </div>
+
+  <div class="era"><span>The search</span></div>
+
+  <div class="node fork">
+    <div class="when">2016 · Fork</div>
+    <h3>Business School or the World Race</h3>
+    <div class="split">
+      <div class="branch taken"><span class="lab">Taken</span><b>The World Race and non-profit work</b><p>Two years of travel and service with Adventures in Missions and Iris Global.</p></div>
+      <div class="branch left"><span class="lab">Left</span><b>Business school</b><p>Wharton said no.</p></div>
+    </div>
+    <p class="why">I didn't understand why I wanted to go to business school.</p>
+  </div>
+
+  <div class="node">
+    <div class="when">2016 to 2018</div>
+    <h3>Two years abroad</h3>
+    <div class="place">Brazil · Mozambique · Greece · India · Morocco</div>
+    <p>I led a team mentoring more than 40 children in the favelas of Brazil, and served on teams helping refugees in Greece and orphans in India and Morocco. The first eighteen months were great. The last six broke me, because the lifestyle and the volunteers were irresponsible. I still needed distance from the United States to grow into the version of myself I believed I was becoming.</p>
+  </div>
+
+  <div class="node fork">
+    <div class="when">2018 · Fork</div>
+    <h3>IESE or Regent College</h3>
+    <div class="split">
+      <div class="branch taken"><span class="lab">Taken</span><b>IESE Business School, Barcelona</b><p>MBA, 2018 to 2020.</p></div>
+      <div class="branch left"><span class="lab">Left</span><b>Regent College, Vancouver</b><p>Theology. Eugene Peterson and the college's study of Bonhoeffer drew me in, and Bonhoeffer's closeness to non-believers was reshaping my views.</p></div>
+    </div>
+    <p class="why">I wanted to stay close to everyday people, not get drawn into the theological bubble.</p>
+  </div>
+
+  <div class="node">
+    <div class="when">Autumn 2018</div>
+    <h3>Met my wife</h3>
+  </div>
+
+  <div class="era"><span>AB InBev</span></div>
+
+  <div class="node fork">
+    <div class="when">2020 · Fork</div>
+    <h3>Digital Lead, UK or Expansion Manager, Europe</h3>
+    <div class="split">
+      <div class="branch taken"><span class="lab">Taken</span><b>Expansion Manager, Europe</b><p>Then COVID arrived, and the role became Route-to-Market Manager for the Middle East.</p></div>
+      <div class="branch left"><span class="lab">Left</span><b>Digital Lead, UK</b></div>
+    </div>
+    <p class="why">I chose AB InBev to learn commercial excellence in consumer goods.</p>
+  </div>
+
+  <div class="node">
+    <div class="when">2020 to 2022</div>
+    <h3>Head of Commercial Operations, Expansion Markets</h3>
+    <div class="place">Leuven, Belgium</div>
+    <p>I built a revenue and category management team for the early-growth markets.</p>
+  </div>
+
+  <div class="node">
+    <div class="when">July 2021</div>
+    <h3>Married</h3>
+  </div>
+
+  <div class="node fork">
+    <div class="when">2022 · Fork</div>
+    <h3>Norway</h3>
+    <div class="split">
+      <div class="branch taken"><span class="lab">Taken</span><b>Country Manager, Norway and Denmark</b><p>I saw the role was open and told the Expansion Director I was interested. She asked if I would move to Norway. I said I would talk with my spouse and asked for 48 hours. She agreed, reluctantly.</p></div>
+      <div class="branch left"><span class="lab">Left</span><b>Stay in Leuven</b></div>
+    </div>
+    <p class="why">We loved it. Amazing two years.</p>
+  </div>
+
+  <div class="era"><span>Barcelona</span></div>
+
+  <div class="node fork">
+    <div class="when">2024 · Fork</div>
+    <h3>Back to Spain, into tech</h3>
+    <div class="split">
+      <div class="branch taken"><span class="lab">Taken</span><b>Commercial Director, Western Europe at AoFrio</b><p>An IoT company serving the world's largest beverage brands.</p></div>
+      <div class="branch left"><span class="lab">Left</span><b>Stay at AB InBev</b></div>
+    </div>
+    <p class="why">It was opportunistic: a way back to Spain, a way into SaaS and tech, and great pay for a Spain-based role.</p>
+  </div>
+
+  <div class="node fork">
+    <div class="when">2026 · Fork</div>
+    <h3>Away from sales</h3>
+    <div class="split">
+      <div class="branch taken"><span class="lab">Taken</span><b>Data and applied AI</b><p>I joined Ironhack's Data Analytics bootcamp in October 2026.</p></div>
+      <div class="branch left"><span class="lab">Left</span><b>Cold sales roles</b><p>It's boring and unrewarding for me. I found a journal entry from around 2020 that said much the same.</p></div>
+    </div>
+    <p class="why">I refuse to take any more cold sales roles. I do have a new appreciation for sales, though.</p>
+  </div>
+
+  <div class="node now">
+    <div class="when">Now · October 2026</div>
+    <h3>Matadepera</h3>
+    <p>My wife and I live in our renovated 1970s house near Barcelona. My days are the bootcamp. In between, I am drafting my novel, testing Confidence Lab and curating a library of 557 books.</p>
+  </div>
+
+</div>
+</section>
+
+<footer>Built from an interview on 20 October 2026, my CV and my ChatGPT history.</footer>
+</div>
+</body>
+</html>

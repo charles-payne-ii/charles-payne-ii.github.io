@@ -1,0 +1,386 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>The Payne Catalog</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Courier+Prime:wght@400;700&display=swap">
+<style>
+/* Layout: a library card catalog. A drawer of index cards, each with a call number (wing + month), behind a ruled masthead and a month-by-month ledger. */
+:root{
+  --bg:#e9edf1; --drawer:#dde3e9; --card:#fbfcfd; --ink:#1b2735; --muted:#5a6878; --rule:#b9c7d6;
+  --red:#b23a48; --redsoft:rgba(178,58,72,.12); --blue:#2f5d8a; --line:#cfd8e2;
+  --display:"Big Shoulders Display","Arial Narrow",Impact,sans-serif;
+  --body:"Newsreader",Georgia,"Times New Roman",serif;
+  --mono:"Courier Prime","Courier New",Courier,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0e141c; --drawer:#131b25; --card:#1a2430; --ink:#e6ecf2; --muted:#93a2b3; --rule:#2c3b4c;
+  --red:#e2707c; --redsoft:rgba(226,112,124,.14); --blue:#86b2dc; --line:#2a3644; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e141c; --drawer:#131b25; --card:#1a2430; --ink:#e6ecf2; --muted:#93a2b3; --rule:#2c3b4c;
+  --red:#e2707c; --redsoft:rgba(226,112,124,.14); --blue:#86b2dc; --line:#2a3644; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;margin:0}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1;letter-spacing:.01em}
+.mono{font-family:var(--mono)}
+a{color:var(--blue)}
+:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+
+/* masthead */
+.pages{display:flex;flex-wrap:wrap;gap:18px;padding-block:18px 0;font-family:var(--mono);font-size:13px;letter-spacing:.08em;text-transform:uppercase}
+.pages a{color:var(--muted);text-decoration:none;border-bottom:1px solid transparent}
+.pages a:hover{color:var(--ink);border-bottom-color:var(--red)}
+.pages a[aria-current="page"]{color:var(--red);border-bottom-color:var(--red)}
+header{padding-block:28px 28px;border-bottom:3px double var(--rule)}
+.eyebrow{font-family:var(--mono);font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--red)}
+header h1{font-size:clamp(56px,11vw,120px);font-weight:800;text-transform:uppercase;margin-top:10px}
+.lede{max-width:62ch;font-size:19px;color:var(--muted);margin:16px 0 0}
+.counts{display:flex;flex-wrap:wrap;gap:0;margin-top:28px;border:1px solid var(--rule);background:var(--card)}
+.count{flex:1 1 150px;padding:14px 18px;border-right:1px solid var(--line)}
+.count:last-child{border-right:0}
+.count b{display:block;font-family:var(--display);font-size:40px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.count span{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+
+section{padding-block:44px 8px}
+.sechead{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;border-bottom:1px solid var(--rule);padding-bottom:10px;margin-bottom:22px}
+.sechead h2{font-size:clamp(32px,5vw,46px);font-weight:700;text-transform:uppercase}
+.sechead p{margin:0;color:var(--muted);font-size:15px;max-width:52ch}
+
+/* ledger chart */
+.ledger{background:var(--card);border:1px solid var(--rule);padding:18px 18px 10px;overflow-x:auto}
+.ledger svg{display:block;min-width:720px;width:100%;height:auto}
+.ledger text{font-family:var(--mono);fill:var(--muted);font-size:11px}
+.ledger .val{fill:var(--ink);font-size:11px}
+.ledger .note{fill:var(--red);font-size:11px}
+.legendnote{font-size:14px;color:var(--muted);margin:10px 2px 0}
+
+/* wings */
+.wings{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.wing{background:var(--card);border:1px solid var(--rule);padding:16px 18px 18px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.wing .code{font-family:var(--mono);font-size:13px;color:var(--red);letter-spacing:.06em}
+.wing h3{font-size:28px;font-weight:700;text-transform:uppercase}
+.wing p{margin:0;font-size:15.5px}
+.wing .status{margin-top:auto;font-family:var(--mono);font-size:12px;color:var(--muted);border-top:1px dashed var(--line);padding-top:8px}
+
+/* drawer */
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.filters button{font-family:var(--mono);font-size:13px;letter-spacing:.04em;background:transparent;color:var(--ink);border:1px solid var(--rule);padding:7px 12px;cursor:pointer;border-radius:2px}
+.filters button[aria-pressed="true"]{background:var(--ink);color:var(--card);border-color:var(--ink)}
+.filters button:hover{border-color:var(--red)}
+.drawer{background:var(--drawer);padding:16px;border:1px solid var(--rule)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.card{background:var(--card);min-width:0;position:relative;padding:14px 16px 14px;
+  background-image:repeating-linear-gradient(to bottom,transparent 0,transparent 27px,var(--line) 27px,var(--line) 28px);
+  background-position:0 44px;box-shadow:0 1px 0 var(--rule)}
+.card::before{content:"";position:absolute;left:0;right:0;top:38px;height:2px;background:var(--red);opacity:.75}
+.card .top{display:flex;justify-content:space-between;gap:10px;font-family:var(--mono);font-size:12.5px;height:28px;align-items:center}
+.card .call{color:var(--red);font-weight:700;letter-spacing:.05em}
+.card .kind{color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-size:11px}
+.card h4{font-family:var(--body);font-weight:500;font-size:18px;line-height:28px;margin:8px 0 0}
+.card p{margin:0;font-size:15px;line-height:28px;color:var(--ink)}
+.card .src{font-family:var(--mono);font-size:11.5px;color:var(--muted);line-height:28px}
+.empty{padding:30px;text-align:center;color:var(--muted)}
+
+/* lexicon */
+.lex{columns:3 260px;column-gap:28px}
+.lex div{break-inside:avoid;padding:10px 0;border-bottom:1px solid var(--line)}
+.lex dt{font-family:var(--mono);font-weight:700;font-size:14px;color:var(--red);letter-spacing:.03em}
+.lex dd{margin:3px 0 0;font-size:15.5px}
+.lex .w{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-left:6px;font-weight:400}
+
+.wlinks{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:10px;font-family:var(--mono);font-size:12px}
+.wlinks a{color:var(--blue);text-decoration:underline;text-underline-offset:3px}
+.wlinks a:hover{color:var(--red)}
+
+/* lines */
+.lines{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+blockquote{margin:0;background:var(--card);border-left:3px solid var(--red);padding:16px 18px;min-width:0}
+blockquote q{font-family:var(--body);font-style:italic;font-size:20px;line-height:1.35;quotes:"\201C" "\201D"}
+blockquote cite{display:block;margin-top:10px;font-style:normal;font-family:var(--mono);font-size:12px;color:var(--muted)}
+
+/* shelf */
+.shelf{display:flex;flex-wrap:wrap;align-items:flex-end;gap:6px;padding:18px 16px 0;background:var(--card);border:1px solid var(--rule);border-bottom:8px solid var(--rule)}
+.spine{writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--display);font-weight:700;letter-spacing:.04em;text-transform:uppercase;font-size:15px;padding:12px 8px;border:1px solid var(--rule);background:var(--drawer);color:var(--ink);line-height:1.1;white-space:nowrap;flex:1 1 auto;max-width:76px;display:flex;align-items:center;justify-content:flex-start;gap:6px}
+.spine small{display:block;font-family:var(--mono);font-weight:400;font-size:10px;text-transform:none;color:var(--muted);letter-spacing:0}
+.spine.fav{background:var(--redsoft);border-color:var(--red)}
+.shelfkey{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:12px;font-family:var(--mono);font-size:12px;color:var(--muted)}
+.shelfkey span{display:inline-flex;align-items:center;gap:8px}
+.shelfkey i{display:inline-block;width:12px;height:12px;border:1px solid var(--rule);background:var(--drawer)}
+.shelfkey i.fav{background:var(--redsoft);border-color:var(--red)}
+
+/* crew */
+.crew{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.crew div{background:var(--card);border:1px solid var(--rule);padding:12px 14px}
+.crew b{font-family:var(--display);font-size:24px;text-transform:uppercase;display:block}
+.crew span{font-size:14.5px;color:var(--muted)}
+
+/* niche */
+.niche{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.niche div{background:var(--card);border:1px solid var(--rule);padding:14px 16px;min-width:0}
+.niche h3{font-size:24px;font-weight:700;text-transform:uppercase;margin-bottom:8px}
+.niche ul{margin:0;padding:0;list-style:none}
+.niche li{padding:6px 0;border-top:1px solid var(--line);font-size:15.5px;line-height:1.4}
+.niche li:first-child{border-top:0}
+.niche li small{display:block;font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-top:2px}
+footer{padding-block:40px 56px;color:var(--muted);font-size:14px;border-top:3px double var(--rule);margin-top:44px}
+@media (max-width:520px){body{font-size:16px}.count{flex-basis:50%;border-bottom:1px solid var(--line)}}
+@media (prefers-reduced-motion:no-preference){.card{transition:transform .15s ease}.card:hover{transform:translateY(-2px)}}
+</style>
+
+<div class="wrap">
+<nav class="pages" aria-label="Pages"><a href="./" aria-current="page">The Catalog</a><a href="forks.html">Decision Tree</a><a href="interesting.html">Interesting Stuff</a></nav>
+<header>
+  <div class="eyebrow">Catalog of works, ideas and decisions · Aug 2025 to Oct 2026</div>
+  <h1>The Payne Catalog</h1>
+  <p class="lede">Everything I built, named or settled across 95 ChatGPT conversations, filed like a library drawer. Each card carries a call number: the wing it belongs to, then the month it was made.</p>
+  <div class="counts">
+    <div class="count"><b>95</b><span>Conversations</span></div>
+    <div class="count"><b>2,548</b><span>Messages I sent</span></div>
+    <div class="count" title="Marked read in my library spreadsheet, including books I read until I chose to stop. Titles with no record are not counted."><b>182</b><span>Books read</span></div>
+    <div class="count"><b>7</b><span>Projects</span></div>
+  </div>
+</header>
+
+<section id="ledger">
+  <div class="sechead"><h2>The Ledger</h2><p>Messages I sent each month, with the subject that dominated it. October 2026 runs only to the 15th.</p></div>
+  <div class="ledger"><svg id="chart" viewBox="0 0 1000 300" role="img" aria-label="Bar chart of messages per month from August 2025 to October 2026"></svg></div>
+  <p class="legendnote">Three bursts stand out: the brand and novel summer of 2025, the library curation of December 2025, and the life planning of autumn 2026.</p>
+</section>
+
+<section id="wings">
+  <div class="sechead"><h2>Stuff I'm Building / Working On</h2><p>The seven bodies of work. The code on each is the prefix of its call numbers.</p></div>
+  <div class="wings" id="winglist"></div>
+</section>
+
+<section id="drawer">
+  <div class="sechead"><h2>The Drawer</h2><p>A curated selection of what I made, named or settled. Filter by wing.</p></div>
+  <div class="filters" id="filters" role="group" aria-label="Filter cards by wing"></div>
+  <div class="drawer"><div class="cards" id="cards"></div></div>
+</section>
+
+<section id="lexicon">
+  <div class="sechead"><h2>The Lexicon</h2><p>Ideas I coined or named, beyond any one project.</p></div>
+  <dl class="lex" id="lex"></dl>
+</section>
+
+<section id="lines">
+  <div class="sechead"><h2>Quotes I Think About</h2><p>Lines I wrote and lines I borrowed. More will be added over time.</p></div>
+  <div class="lines" id="quotes"></div>
+</section>
+
+<section id="niche">
+  <div class="sechead"><h2>Niche Things I Like</h2><p>The small, specific things I keep coming back to. My own list once included: create a section of a webpage for things I like.</p></div>
+  <div class="niche">
+    <div><h3>Sound</h3><ul>
+      <li>In-studio music production videos of artists and producers working together</li>
+      <li>Acoustic and nylon string guitars<small>I played acoustic and classical guitar, and was All-State on string bass, a long time ago</small></li>
+      <li>Linkin Park (first two albums) and early 2000s Pitchfork Indie<small>High school always defines our music taste. My heavy rotation</small></li>
+      <li>Tech house, deep house and some 2010s progressive house<small>I have two co-built playlists with a best friend, &quot;Compression Sacks &amp; Mockeys&quot; and &quot;The Midnight Deep&quot;</small></li>
+    </ul></div>
+    <div><h3>Screens and Play</h3><ul>
+      <li>Watching League of Legends<small>Mainly via Caedrel for LCK and LEC</small></li>
+      <li>Helldivers and Expedition 33</li>
+      <li>Award-winning anime<small>Jujutsu Kaisen and Demon Slayer, and the occasional manga, such as Solo Leveling</small></li>
+      <li>Padel<small>Yes... I know. It's like pickle ball for European guys.</small></li>
+    </ul></div>
+    <div><h3>Objects</h3><ul>
+      <li>The Uni-ball Jetstream RT 0.7<small>My favorite pen for more than a decade. My wife is also a convert</small></li>
+      <li>Fewer but better things</li>
+      <li>Serif typefaces</li>
+    </ul></div>
+    <div><h3>Rituals</h3><ul>
+      <li>Water with lemon and salt, and coffee in the morning</li>
+      <li>Walking the dog with my wife, or alone to clear my head</li>
+      <li>Calling my best friends every week</li>
+      <li>Making tacos</li>
+      <li>Weightlifting, with an audiobook running</li>
+      <li>Annual reflections</li>
+    </ul></div>
+    <div><h3>Places</h3><ul>
+      <li>Bookstores, especially curated used bookstores in Europe</li>
+      <li>Travelling with my wife and with my best friends</li>
+      <li>Adrenaline-filled adventures</li>
+      <li>Favourite places<small>Lofoten, the Grand Tetons, Ibiza, Chiang Mai and southern Nepal</small></li>
+    </ul></div>
+    <div><h3>Minds</h3><ul>
+      <li>Story-driven biographies of great athletes<small>Agassi, Jordan, Schwarzenegger</small></li>
+      <li>Chamath Palihapitiya and Naval</li>
+      <li>Chris Williamson, Rob Henderson and Adam Mastroianni</li>
+      <li>David Senra and Founders</li>
+      <li>Conversations about geopolitics and Western society</li>
+    </ul></div>
+  </div>
+</section>
+
+<section id="shelf">
+  <div class="sechead"><h2>The Shelf</h2><p>My favourite and most influential books first, then my current reading. Each group is filed alphabetically by title, ignoring "The" and "A".</p></div>
+  <div class="shelf" id="spines"></div>
+  <div class="shelfkey"><span><i class="fav"></i>Most Influential and Favorite Books</span><span><i></i>Current reading line-up</span></div>
+</section>
+
+<section id="crew">
+  <div class="sechead"><h2>The AI Crew</h2><p>The names I gave my AI collaborators.</p></div>
+  <div class="crew" id="crewlist"></div>
+</section>
+
+<footer>Compiled October 2026 from my ChatGPT export and my own uploaded documents. Material about how jobs ended, health, personal finances and ChatGPT's personality write-ups was left out by design.</footer>
+</div>
+
+<script>
+const WINGS=[
+ {k:"CL",links:[["Try the app","https://charles-payne-ii.github.io/confidence-lab/"],["GitHub","https://github.com/charles-payne-ii/confidence-lab"]],n:"Confidence Lab",d:"A confidence-training app built on evidence from your own life, with a Zeus Art Deco brand.",s:"Live prototype · user testing Oct 2026"},
+ {k:"MY",n:"Mycroft",d:"An AI companion that reads any article aloud and stops to discuss it, built by me, a non-coder, directing a team of AI agents.",s:"Phase 3 reached · Sep 2026"},
+ {k:"IN",n:"Investing",d:"A rule-based, five-sleeve scenario framework with kill switches, caps and an honest audit of my own record.",s:"Framework v3 · Jul 2026"},
+ {k:"CA",n:"Career Change",d:"The move from commercial leadership to data and applied AI, run with research, rating systems and a disciplined CV.",s:"Ironhack bootcamp · Oct to Dec 2026"},
+ {k:"RD",n:"The Library",d:"A 557-title library curated with shelves, rules and a litmus test, and a reading life tracked since 2018.",s:"Core four set · Oct 2026"},
+ {k:"BR",n:"@CharlesGotData",d:"An Instagram brand about data, books and big ideas, built on one promise: integrity over clicks.",s:"Brand spine locked · Aug 2025"},
+ {k:"LF",n:"Life and Tinkering",d:"The practical and the curious: a strategy canon, a home rebuilt, a daily thinking practice.",s:"Ongoing"}
+];
+const CARDS=[
+ ["CL","2026.10","Software","Confidence Lab v0.1","A React web app with daily practice, challenge prep, reviews and a Confidence Bank, deployed on GitHub Pages.","Building Confidence Lab"],
+ ["CL","2026.10","Product","The four modules","Build Confidence, Prepare to Perform, Manage Pressure, Learn from Setbacks. Ninety seconds to five minutes each.","Building Confidence Lab"],
+ ["CL","2026.10","Design","The evolving Zeus","Five stages from Uncarved Stone to Illuminated Zeus. Zeus never moves backwards.","Building Confidence Lab"],
+ ["CL","2026.10","Brand","Brand identity guide","Essence: remember what is true about you. Values: Pride, Inner Greatness, Commitment to Potential.","Building Confidence Lab"],
+ ["CL","2026.10","Plan","Quiz-to-paywall funnel","An ad, a confidence check quiz, a personalised result and a seven-day trial.","Building Confidence Lab"],
+ ["CL","2026.10","Concept","Tablets in the heavens","Each entry is inscribed on a tablet, and a completed week becomes a tablet in the sky while Zeus celebrates.","Access Confidence Lab Testing"],
+ ["MY","2026.09","Naming","Mycroft, called Mike","Named after the AI in Heinlein's The Moon Is a Harsh Mistress.","Compare AI Coding Tools"],
+ ["MY","2026.09","Product","The reading loop","Read, interrupt, discuss, understand, continue. Five states: Reading, Listening, Interrupting, Discussing, Paused.","Compare AI Coding Tools"],
+ ["MY","2026.09","Milestone","Phase 3: narration","Reads a real article aloud with synchronised sentence highlighting, prefetch, caching, pause and resume.","Compare AI Coding Tools"],
+ ["MY","2026.09","Workflow","Scope of work and prompt","My standing convention: the SCOPE OF WORK is the spec, and the PROMPT is the short instruction that demands evidence.","Compare AI Coding Tools"],
+ ["MY","2026.09","Roadmap idea","Intelligent domain routing","Send questions to subject-specialist models and escalate the hard ones to frontier models.","Compare AI Coding Tools"],
+ ["IN","2026.07","Framework","Regime-based sleeve model","Three macro scenarios, five sleeves, each reacting in its own way, combined into one portfolio result.","Three Scenario Framework"],
+ ["IN","2026.07","Naming","The three scenarios","AI Liquidity Extension, Sticky Nominal Grind and Liquidity/Capex Break. Stress environments, not forecasts.","Three Scenario Framework"],
+ ["IN","2026.07","Rules","Standing investment rules","No single-scenario optimisation. Every expected value travels with its probability set. Nudges are capped.","Three Scenario Framework"],
+ ["IN","2026.07","Plan","Neutral exit policy","A predefined three-tranche exit, with no re-underwriting during euphoria.","Benchmark Specification Review"],
+ ["IN","2026.07","Document","Worldview v0.1","A table of beliefs with confidence levels, falsification criteria and portfolio rules for each sleeve.","Three Scenario Framework"],
+ ["IN","2026.07","Spreadsheet","Truth Tests and Decision Journal","A performance audit splitting the legacy era from my own strategy.","Benchmark Specification Review"],
+ ["CA","2026.08","Skill","cv-bullet-writer","At least 80% of the wording comes from my own bullets, in Action, Result, Context order, with no consultant language.","Job Application Expert"],
+ ["CA","2026.08","Architecture","One master CV","A master CV with RevMan, Product and RelMng derivatives in one frozen, ATS-friendly format.","Job Application Expert"],
+ ["CA","2026.09","Rule","The no-sales line","No sales, business development, quota, closing or presales in any future role.","Personality-Workfit Analysis"],
+ ["CA","2026.09","Framework","The decision chain","What you like, what the market calls it, who pays for it, what it requires, and which training builds it.","Career Path Research Prompt"],
+ ["CA","2026.09","Ratings","19 role families, 13 vacancies","Every role rated A, B or C against how I actually want to work.","Personality-Workfit Analysis"],
+ ["CA","2026.09","Method","Debiased review scoring","Bayesian shrinkage on course reviews, and a weighted rubric with curriculum at 35%.","DS & AI Learning Plan"],
+ ["CA","2026.09","Plan","Two-phase learning thesis","Foundations first, then engineering and AI architecture. The two phases may come from different schools.","DS & AI Learning Plan"],
+ ["CA","2026.07","Plan","Career thesis v1.0","Become an expert in how leaders make consequential decisions under strategic uncertainty, by way of King's College London.","Unlived Lives Dreamwork"],
+ ["RD","2025.12","Framework","The Charles Litmus Test","Five checks a book must pass, starting with whether it reinforces grounded adulthood.","Kindle, Book, & Audiobook Analysis"],
+ ["RD","2025.12","Framework","Four influence patterns","Grounded heroic self-overcoming, meaning and existential clarity, embodied myth, and identity and competence.","Kindle, Book, & Audiobook Analysis"],
+ ["RD","2025.12","Shelf","The Becoming Shelf","Twelve core books, with a fifteen-book Deepening Shelf behind it.","Kindle, Book, & Audiobook Analysis"],
+ ["RD","2025.12","Rule","Archive versus Donate","Donate means no future value. Archive means outdated for identity, still useful.","Kindle, Book, & Audiobook Analysis"],
+ ["RD","2026.10","Spreadsheet","Master Book Library 2026","557 titles merged from purchases, dictated inventories, conversations and shelf photos.","Evaluate book shelf"],
+ ["RD","2026.10","Rule","The five-book shelf","Two books of proven taste, two that apply now, and one deeper literary book.","Evaluate book shelf"],
+ ["RD","2026.10","List","Ten poems","A working list from the 1999 Oxford Book of English Verse, kept to the poems that land.","Poetry To Read"],
+ ["BR","2025.08","Decision","@CharlesGotData","Chosen over ChatGPT's top pick, Fact Frame, which I found boring. FactsFramed is kept as the long-term name.","@CharlesGotData Branding"],
+ ["BR","2025.08","Design","Signal Lens Gradient","The amber-to-moss gradient from the glasses in my portrait, made the official palette.","@CharlesGotData Branding"],
+ ["BR","2025.08","Framework","Brand spine","Positioning, promise, values, audience and content pillars, marked as core and not to be edited.","@CharlesGotData Branding"],
+ ["BR","2025.08","Design","Original_Retro portrait","A halftone pop-art self-portrait with a futuristic shield lens in a rainbow gradient.","Creative photo alternatives"],
+ ["LF","2026.07","Practice","The Observer's Practice","One daily unarticulated truth, statements without hedges, in one sentence free of borrowed language.","Unlived Lives Dreamwork"],
+ ["LF","2026.07","List","Year-one strategy canon","Freedman, Gaddis and Schelling, with RAND, CSIS, RUSI, IISS and the NATO Defence College instead of the news.","Unlived Lives Dreamwork"],
+ ["LF","2026.06","Rules","Renovation invoice rules","Strict rules for cumulative contractor invoices, so that every line is either in scope or flagged.","Renovation Cost Analysis"],
+ ["LF","2026.05","List","Padel vocabulary","Spanish calls, shot names and coaching phrases for talking to my coach and partner.","Comandos de padel"]
+];
+const LEX=[
+ ["Confidence amnesia","CL","We forget the evidence of our strength and remember only the evidence of our struggle."],
+ ["Coffee-table Monte Carlo","IN","A weighted guess dressed up as a simulation. My name for my own old investing model."],
+ ["Becoming Shelf","RD","Books that build steadiness and character for the season you are in, as opposed to books that make you analyse yourself."],
+ ["Naming the Obvious","LF","Saying out loud the truth everyone senses but no one states."],
+ ["The unit economics of adulthood","LF","What you see when expectations drop: the plain mechanics of how adult life in society actually works."]
+];
+const QUOTES=[
+ ["Integrity > clicks","me, Charles Payne II"],
+ ["Truth is the ultimate disinfectant.","Reflections on Seeing Clearly by Charles Payne"],
+ ["Ambiguity is the weapon of both the wise and the cowards.","Reflections on Seeing Clearly by Charles Payne"]
+];
+const KEPT=[
+ ["What I do is me: for that I came.","Gerard Manley Hopkins, As Kingfishers Catch Fire"],
+ ["Not content with a half truth when the whole can be won.","The West Point Cadet Prayer, Bugle Notes"],
+ ["If we will have the wisdom to survive, to stand like slow-growing trees on a ruined place, renewing, enriching it... then a long time after we are dead the lives our lives prepare will live...","Wendell Berry, A Vision"],
+ ["What sort of person or leader must I become to accomplish what seems impossible?","Jason Jaggard, Beyond High Performance, a question I use to test fit"],
+ ["The biggest risk isn't making the wrong choice. It's lying to yourself about why you made it.","A one-liner I held up as a model, August 2025"],
+ ["Hit the backspace key.","Jensen Huang, which I cited when cutting a prompt down"]
+];
+const SHELF=[
+ ["Red Rising","Pierce Brown",1],["Lightbringer","Pierce Brown",1],["The Name of the Wind","Rothfuss",1],["The Wise Man's Fear","Rothfuss",1],
+ ["The Way of Kings","Sanderson",1],["The Stars My Destination","Bester",1],["Foundation","Asimov",1],["Open","Agassi",1],["Total Recall","Schwarzenegger",1],
+ ["Tribe","Junger",1],["The Denial of Death","Becker",1],["Quit","Annie Duke",1],["The Fountainhead","Rand",1],
+ ["Going Postal","Pratchett",0],["All Systems Red","Wells",0],["A Gentleman in Moscow","Towles",0],["MAKE","Pieter Levels",0],["Dungeon Crawler Carl (series)","Dinniman",0],["The Creative Act","Rubin",0]
+];
+const CREW=[
+ ["Atlas","ChatGPT, named after the ideological purist in Red Rising. He helps me 'carry my piece of the world'."],
+ ["Polaris","Gemini. Plays red team in my investment scenarios for Coffee-table Monte Carlo."],
+ ["Mike","Grok, product lead and orchestrator of the Mycroft team, who always runs point on the other bots."],
+ ["Fable","The AI model I use to question and poke holes in my investment theses."]
+];
+
+const MONTHS=[["Aug 25",522,"Brand"],["Sep",195,"Novel"],["Oct",76,"Novel"],["Nov",7,""],["Dec",208,"Library"],["Jan 26",1,""],["Feb",1,""],["Mar",14,"Novel"],["Apr",27,"Travel"],["May",1,""],["Jun",15,""],["Jul",191,"Games"],["Aug",109,"Novel"],["Sep",513,"Life Planning"],["Oct*",648,"Life Planning"]];
+
+const HIDDEN=["CA"];
+const W=Object.fromEntries(WINGS.map(w=>[w.k,w]));
+const SHOWN=CARDS.filter(c=>!HIDDEN.includes(c[0]));
+const el=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e};
+const esc=s=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;");
+
+// chart
+(function(){
+  const svg=document.getElementById('chart'),NS="http://www.w3.org/2000/svg";
+  const left=46,right=990,top=34,bottom=250,max=700;
+  const y=v=>bottom-(v/max)*(bottom-top);
+  const add=(tag,attrs,text)=>{const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;svg.appendChild(e);return e};
+  [0,200,400,600].forEach(t=>{add('line',{x1:left,x2:right,y1:y(t),y2:y(t),stroke:'var(--line)','stroke-width':1});add('text',{x:left-8,y:y(t)+4,'text-anchor':'end'},t)});
+  const step=(right-left)/MONTHS.length,bw=step*.62;
+  MONTHS.forEach((m,i)=>{
+    const x=left+i*step+(step-bw)/2,h=bottom-y(m[1]);
+    add('rect',{x,y:y(m[1]),width:bw,height:Math.max(h,1),fill:m[1]>150?'var(--red)':'var(--blue)',opacity:m[1]>150?1:.55});
+    add('text',{x:x+bw/2,y:bottom+16,'text-anchor':'middle'},m[0]);
+    if(m[1]>=14)add('text',{x:x+bw/2,y:y(m[1])-6,'text-anchor':'middle',class:'val'},m[1]);
+    if(m[2]&&m[1]>=14)m[2].split(' ').forEach((wd,j)=>add('text',{x:x+bw/2,y:bottom+32+j*13,'text-anchor':'middle',class:'note'},wd));
+  });
+  add('line',{x1:left,x2:right,y1:bottom,y2:bottom,stroke:'var(--muted)','stroke-width':1});
+})();
+
+// wings
+const wl=document.getElementById('winglist');
+WINGS.forEach(w=>{const d=el('div','wing');d.innerHTML=`<span class="code">${w.k}</span><h3>${esc(w.n)}</h3><p>${esc(w.d)}</p><span class="status">${esc(w.s)}</span>${w.links?`<span class="wlinks">${w.links.map(([t,u])=>`<a href="${u}" target="_blank" rel="noopener">${esc(t)} &rarr;</a>`).join('')}</span>`:''}`;wl.appendChild(d)});
+
+// filters and cards
+const fwrap=document.getElementById('filters'),cwrap=document.getElementById('cards');
+let active="ALL";
+try{const s=localStorage.getItem('payne-wing');if(s&&(s==="ALL"||(W[s]&&!HIDDEN.includes(s))))active=s}catch(e){}
+function renderCards(){
+  cwrap.innerHTML="";
+  const list=SHOWN.filter(c=>active==="ALL"||c[0]===active);
+  if(!list.length){cwrap.appendChild(el('div','empty','No cards in this wing.'));return}
+  list.forEach(c=>{const d=el('article','card');
+    d.innerHTML=`<div class="top"><span class="call">${c[0]} ${c[1]}</span><span class="kind">${esc(c[2])}</span></div><h4>${esc(c[3])}</h4><p>${esc(c[4])}</p><div class="src">From: ${esc(c[5])}</div>`;
+    cwrap.appendChild(d)});
+}
+function renderFilters(){
+  fwrap.innerHTML="";
+  [["ALL","All wings ("+SHOWN.length+")"]].concat(WINGS.filter(w=>!HIDDEN.includes(w.k)).map(w=>[w.k,w.k+" · "+w.n])).forEach(([k,label])=>{
+    const b=el('button');b.type='button';b.id='f-'+k;b.textContent=label;b.setAttribute('aria-pressed',String(active===k));
+    b.addEventListener('click',()=>{active=k;try{localStorage.setItem('payne-wing',k)}catch(e){};renderFilters();renderCards()});
+    fwrap.appendChild(b)});
+}
+renderFilters();renderCards();
+
+// lexicon
+const lx=document.getElementById('lex');
+LEX.forEach(([t,w,d])=>{const g=el('div');g.innerHTML=`<dt>${esc(t)}<span class="w">${w}</span></dt><dd>${esc(d)}</dd>`;lx.appendChild(g)});
+
+// quotes
+const qw=document.getElementById('quotes');
+QUOTES.forEach(([q,c])=>{const b=el('blockquote');b.innerHTML=`<q>${esc(q)}</q><cite>${esc(c)}</cite>`;qw.appendChild(b)});
+KEPT.forEach(([q,c])=>{const b=el('blockquote');b.innerHTML=`<q>${esc(q)}</q><cite>${esc(c)}</cite>`;qw.appendChild(b)});
+
+// shelf
+const sp=document.getElementById('spines');
+const sortKey=t=>t.replace(/^(The|A|An) /,"").toLowerCase();
+SHELF.sort((a,b)=>(b[2]-a[2])||sortKey(a[0]).localeCompare(sortKey(b[0])));
+SHELF.forEach(([t,a,f],i)=>{const s=el('div','spine'+(f?' fav':''));s.style.minHeight=(190+((i*37)%60))+'px';s.innerHTML=`${esc(t)} <small>${esc(a)}</small>`;s.title=t+' by '+a;sp.appendChild(s)});
+
+// crew
+const cr=document.getElementById('crewlist');
+CREW.forEach(([n,d])=>{const c=el('div');c.innerHTML=`<b>${esc(n)}</b><span>${esc(d)}</span>`;cr.appendChild(c)});
+</script>
+
+</body></html>
