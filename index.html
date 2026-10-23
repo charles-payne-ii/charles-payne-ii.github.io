@@ -129,7 +129,7 @@ footer{padding-block:40px 56px;color:var(--muted);font-size:14px;border-top:3px 
 </style>
 
 <div class="wrap">
-<nav class="pages" aria-label="Pages"><a href="./" aria-current="page">The Catalog</a><a href="forks.html">Decision Tree</a><a href="interesting.html">Interesting Stuff</a></nav>
+<nav class="pages" aria-label="Pages"><a href="./" aria-current="page">The Catalog</a><a href="forks.html">My Life - A Decision Tree</a><a href="interesting.html">Interesting Stuff</a></nav>
 <header>
   <div class="eyebrow">Catalog of works, ideas and decisions · Aug 2025 to Oct 2026</div>
   <h1>The Payne Catalog</h1>
@@ -137,7 +137,7 @@ footer{padding-block:40px 56px;color:var(--muted);font-size:14px;border-top:3px 
   <div class="counts">
     <div class="count"><b>95</b><span>Conversations</span></div>
     <div class="count"><b>2,548</b><span>Messages I sent</span></div>
-    <div class="count" title="Marked read in my library spreadsheet, including books I read until I chose to stop. Titles with no record are not counted."><b>182</b><span>Books read</span></div>
+    <div class="count" title="177 catalog records are marked complete or deliberately stopped in the workbook, plus five Dungeon Crawler Carl audiobooks completed in 2026."><b>182</b><span>Books read</span></div>
     <div class="count"><b>7</b><span>Projects</span></div>
   </div>
 </header>
@@ -232,8 +232,8 @@ const WINGS=[
  {k:"CL",links:[["Try the app","https://charles-payne-ii.github.io/confidence-lab/"],["GitHub","https://github.com/charles-payne-ii/confidence-lab"]],n:"Confidence Lab",d:"A confidence-training app built on evidence from your own life, with a Zeus Art Deco brand.",s:"Live prototype · user testing Oct 2026"},
  {k:"MY",n:"Mycroft",d:"An AI companion that reads any article aloud and stops to discuss it, built by me, a non-coder, directing a team of AI agents.",s:"Phase 3 reached · Sep 2026"},
  {k:"IN",n:"Investing",d:"A rule-based, five-sleeve scenario framework with kill switches, caps and an honest audit of my own record.",s:"Framework v3 · Jul 2026"},
- {k:"CA",n:"Career Change",d:"The move from commercial leadership to data and applied AI, run with research, rating systems and a disciplined CV.",s:"Ironhack bootcamp · Oct to Dec 2026"},
- {k:"RD",n:"The Library",d:"A 557-title library curated with shelves, rules and a litmus test, and a reading life tracked since 2018.",s:"Core four set · Oct 2026"},
+ {k:"CA",n:"Career Change",d:"I run operations, use data, and build with AI. I’m learning data analytics with Python and SQL to put new tools to work and make better decisions faster.",s:"Ironhack bootcamp · Oct to Dec 2026"},
+ {k:"RD",n:"The Library",d:"The workbook holds 557 catalog records: 177 completed or deliberately stopped, 21 partial and 359 unconfirmed. Five completed Dungeon Crawler Carl audiobooks outside those records bring books read to 182.",s:"Core four set · Oct 2026"},
  {k:"BR",n:"@CharlesGotData",d:"An Instagram brand about data, books and big ideas, built on one promise: integrity over clicks.",s:"Brand spine locked · Aug 2025"},
  {k:"LF",n:"Life and Tinkering",d:"The practical and the curious: a strategy canon, a home rebuilt, a daily thinking practice.",s:"Ongoing"}
 ];
@@ -267,7 +267,7 @@ const CARDS=[
  ["RD","2025.12","Framework","Four influence patterns","Grounded heroic self-overcoming, meaning and existential clarity, embodied myth, and identity and competence.","Kindle, Book, & Audiobook Analysis"],
  ["RD","2025.12","Shelf","The Becoming Shelf","Twelve core books, with a fifteen-book Deepening Shelf behind it.","Kindle, Book, & Audiobook Analysis"],
  ["RD","2025.12","Rule","Archive versus Donate","Donate means no future value. Archive means outdated for identity, still useful.","Kindle, Book, & Audiobook Analysis"],
- ["RD","2026.10","Spreadsheet","Master Book Library 2026","557 titles merged from purchases, dictated inventories, conversations and shelf photos.","Evaluate book shelf"],
+ ["RD","2026.10","Spreadsheet","Master Book Library 2026","557 catalog records consolidated from 479 spending entries, inventory lists, conversations and shelf photos; duplicate title or edition variants may remain.","Evaluate book shelf"],
  ["RD","2026.10","Rule","The five-book shelf","Two books of proven taste, two that apply now, and one deeper literary book.","Evaluate book shelf"],
  ["RD","2026.10","List","Ten poems","A working list from the 1999 Oxford Book of English Verse, kept to the poems that land.","Poetry To Read"],
  ["BR","2025.08","Decision","@CharlesGotData","Chosen over ChatGPT's top pick, Fact Frame, which I found boring. FactsFramed is kept as the long-term name.","@CharlesGotData Branding"],
@@ -344,8 +344,7 @@ WINGS.forEach(w=>{const d=el('div','wing');d.innerHTML=`<span class="code">${w.k
 
 // filters and cards
 const fwrap=document.getElementById('filters'),cwrap=document.getElementById('cards');
-let active="ALL";
-try{const s=localStorage.getItem('payne-wing');if(s&&(s==="ALL"||(W[s]&&!HIDDEN.includes(s))))active=s}catch(e){}
+let active="CL";
 function renderCards(){
   cwrap.innerHTML="";
   const list=SHOWN.filter(c=>active==="ALL"||c[0]===active);
@@ -356,9 +355,9 @@ function renderCards(){
 }
 function renderFilters(){
   fwrap.innerHTML="";
-  [["ALL","All wings ("+SHOWN.length+")"]].concat(WINGS.filter(w=>!HIDDEN.includes(w.k)).map(w=>[w.k,w.k+" · "+w.n])).forEach(([k,label])=>{
+  WINGS.filter(w=>!HIDDEN.includes(w.k)).map(w=>[w.k,w.k+" · "+w.n]).concat([["ALL","All ("+SHOWN.length+")"]]).forEach(([k,label])=>{
     const b=el('button');b.type='button';b.id='f-'+k;b.textContent=label;b.setAttribute('aria-pressed',String(active===k));
-    b.addEventListener('click',()=>{active=k;try{localStorage.setItem('payne-wing',k)}catch(e){};renderFilters();renderCards()});
+    b.addEventListener('click',()=>{active=k;renderFilters();renderCards()});
     fwrap.appendChild(b)});
 }
 renderFilters();renderCards();
